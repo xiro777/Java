@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b80fbaf-72ac-4131-a84b-6ee34c2921bd" name="Changes" comment="" />
+    <list default="true" id="386fd9e0-6117-4c8f-8cba-8f5221924d1f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +30,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2Mdvv8FNaw7td46QO5QuZsgL0ds" />
+  <component name="ProjectId" id="2NJcoPPbYZlskt58hQ3FVfJGgZf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -39,22 +39,17 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "TODO_SCOPE": "All Places",
-    "last_opened_file_path": "C:/etc/projects/Test",
+    "last_opened_file_path": "C:/etc/projects/Inwemer",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\etc\projects\Test" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
-      <module name="Test" />
+      <module name="ConnectingPDFs" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -74,24 +69,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8b80fbaf-72ac-4131-a84b-6ee34c2921bd" name="Changes" comment="" />
-      <created>1678110502999</created>
+      <changelist id="386fd9e0-6117-4c8f-8cba-8f5221924d1f" name="Changes" comment="" />
+      <created>1679385802021</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1678110502999</updated>
+      <updated>1679385802021</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <pin-to-top-manager>
-      <pinned-members>
-        <PinnedItemInfo parentTag="com.itextpdf.text.pdf.PdfContentByte" memberName="content" />
-      </pinned-members>
-    </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="page.pdf" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
