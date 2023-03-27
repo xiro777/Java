@@ -11,7 +11,7 @@ import java.io.*;
 
 public class ConnectPDFs {
     public static void processPDF() throws IOException, DocumentException {
-        String path = "Komplety";
+        String path = ".."+File.separator+"Komplety";
         String out = "CompletedPDF.pdf";
         File folder = new File(path);
         String[] filesName = folder.list();
@@ -30,7 +30,7 @@ public class ConnectPDFs {
                 PdfTemplate page = writer.getImportedPage(reader,j);
                 Rectangle pageSize = reader.getPageSize(j);
 
-                System.out.println("Iteracja: " + k +" Size: "+reader.getPageSize(j) +  " Rotacja: " +reader.getPageRotation(j));
+                //System.out.println("Iteracja: " + k +" Size: "+reader.getPageSize(j) +  " Rotacja: " +reader.getPageRotation(j));
                 if(pageSize.getWidth() > 595 || pageSize.getHeight() > 842) {
                     AffineTransform transform = new AffineTransform();
                     if(reader.getPageRotation(j) == 90)
