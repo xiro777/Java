@@ -17,8 +17,8 @@ public class Barcode {
     public static void createRectangle(PdfContentByte cb, float x, float y,float w, float h)
     {
         cb.rectangle(x,y,w,h);
-        cb.setColorStroke(BaseColor.WHITE);
-        cb.setColorFill(BaseColor.WHITE);
+        cb.setColorStroke(BaseColor.BLUE);
+        cb.setColorFill(BaseColor.BLUE);
         cb.fillStroke();
 
     }
@@ -213,6 +213,17 @@ public class Barcode {
     }
 
 
+    public static void drawLine(PdfContentByte cb)
+    {
+        float line_width = Utilities.millimetersToPoints(9);
+        float line_tickness = Utilities.millimetersToPoints(0.5f);
+
+        cb.setLineWidth(line_tickness);
+        cb.setColorStroke(BaseColor.BLACK);
+        cb.moveTo(595-line_width, Utilities.millimetersToPoints(5));
+        cb.lineTo(595,Utilities.millimetersToPoints(5));
+        cb.stroke();
+    }
 
     public static void createOMRLine(PdfContentByte cb,int[] omr_arr, float x, float y)
     {

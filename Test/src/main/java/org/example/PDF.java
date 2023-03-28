@@ -56,20 +56,35 @@ public class PDF {
             {
                 iterator++;
             }
+
+            //TWORZENIE BIALEGO TLA POD OMR
+            Barcode.createRectangle(
+                    cb,
+                    GLOBALS.x_pixels - Utilities.millimetersToPoints(10f),
+                    Utilities.millimetersToPoints(297-150),
+                    GLOBALS.BARCODE_HEIGHT,Utilities.millimetersToPoints(150f));
+
+            //TWORZENIE BIALEGO TLA W PRAWYM DOLNYM ROGU
+            Barcode.createRectangle(
+                    cb,
+                    GLOBALS.x_pixels-Utilities.millimetersToPoints(10),
+                    0,
+                    Utilities.millimetersToPoints(10),
+                    Utilities.millimetersToPoints((float)25.4));
+            //TWORZENIE BIALEGO TLA POD BARCODE
+            Barcode.createRectangle(
+                    cb,
+                    0,
+                    Utilities.millimetersToPoints(297-150),
+                    GLOBALS.BARCODE_HEIGHT,
+                    Utilities.millimetersToPoints(150f));
+
             //JESLI ITERATOR JEST NA KARTCE Z ADRESEM DODAJE MATRIXA, BARCODE I OMR
             if(i%6==1)
             {
-
                 Image barcode_img = Barcode.createBarcode(
                         cb,
                         code);
-                //TWORZENIE BIALEGO TLA POD BARCODE
-                Barcode.createRectangle(
-                        cb,
-                        0,
-                        Utilities.millimetersToPoints(297-150),
-                        GLOBALS.BARCODE_HEIGHT,
-                        Utilities.millimetersToPoints(150f));
                 //DODAWANIE TEKSTU BARCODU ROTACJA: rotate == 0 without rotating, rotate == 1 90degree clockwise rotate, rotate == 2 270 degree rotate
                 Barcode.addText(
                         cb,
@@ -108,13 +123,7 @@ public class PDF {
                         GLOBALS.x_pixels-Utilities.millimetersToPoints(9),
                         GLOBALS.y_pixels - Utilities.millimetersToPoints(40));
 
-                //TWORZENIE BIALEGO TLA W PRAWYM DOLNYM ROGU
-                Barcode.createRectangle(
-                        cb,
-                        GLOBALS.x_pixels-Utilities.millimetersToPoints(10),
-                        0,
-                        Utilities.millimetersToPoints(10),
-                        Utilities.millimetersToPoints((float)25.4));
+
 
                 //DODAJE ZDJĘCIE BARCODU I MATRIXA DO PDF'A
                 cb.addImage(barcode_img);
@@ -140,12 +149,7 @@ public class PDF {
                         GLOBALS.y_pixels - Utilities.millimetersToPoints(55f) - barcode_img.getWidth() - 50,
                         1);
 
-                //TWORZENIE BIALEGO TLA POD OMR
-                Barcode.createRectangle(
-                        cb,
-                        GLOBALS.x_pixels - Utilities.millimetersToPoints(10f),
-                        Utilities.millimetersToPoints(297-150),
-                        GLOBALS.BARCODE_HEIGHT,Utilities.millimetersToPoints(150f));
+
                 //create OMR
                 int[] omr_arr = Barcode.crateOMRArray(code, iterator, packetNo);
                 Barcode.createOMRLine(
@@ -156,14 +160,16 @@ public class PDF {
 
 
                 //TWORZENIE BIALEGO TLA POD BIALY DOLNY ROG
-                Barcode.createRectangle(
-                        cb,
-                        GLOBALS.x_pixels-Utilities.millimetersToPoints(10),
-                        0,Utilities.millimetersToPoints(10),
-                        Utilities.millimetersToPoints((float)25.4));
+//                Barcode.createRectangle(
+//                        cb,
+//                        GLOBALS.x_pixels-Utilities.millimetersToPoints(10),
+//                        0,Utilities.millimetersToPoints(10),
+//                        Utilities.millimetersToPoints((float)25.4));
+
                 //adding images to pdf
                 cb.addImage(barcode_img);
             }
+            Barcode.drawLine(cb);
         }
 
 

@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b80fbaf-72ac-4131-a84b-6ee34c2921bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Inwemer/Inwemer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Inwemer/InwemerProjekt/InwemerProjekt.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../przyklad_tace/.idea/przyklad_tace.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +50,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TODO_SCOPE": "All Places",
-    "last_opened_file_path": "C:/etc/projects/EtollPdf",
+    "last_opened_file_path": "C:/etc/projects/ConnectingPDFs",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
