@@ -17,8 +17,8 @@ public class Barcode {
     public static void createRectangle(PdfContentByte cb, float x, float y,float w, float h)
     {
         cb.rectangle(x,y,w,h);
-        cb.setColorStroke(BaseColor.BLUE);
-        cb.setColorFill(BaseColor.BLUE);
+        cb.setColorStroke(BaseColor.WHITE);
+        cb.setColorFill(BaseColor.WHITE);
         cb.fillStroke();
 
     }

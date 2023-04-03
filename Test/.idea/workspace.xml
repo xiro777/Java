@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b80fbaf-72ac-4131-a84b-6ee34c2921bd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Inwemer/Inwemer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Inwemer/InwemerProjekt/InwemerProjekt.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../przyklad_tace/.idea/przyklad_tace.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
