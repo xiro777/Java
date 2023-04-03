@@ -12,8 +12,8 @@ public class Packet {
     String filename;
     boolean isSpeedmail = false;
     String UPOC = "";
-    String sortInfo ="";
-    String matrixValue= "";
+    String sortInfo = "";
+    String matrixValue = "";
     boolean isUlotka = false;
     boolean isLocalAddress = false;
     int sheetsNo;
@@ -32,7 +32,6 @@ public class Packet {
         this.filename = filename;
         this.isUlotka = isUlotka;
     }
-
 
 
     public String getId() {

@@ -24,21 +24,20 @@ public class GLOBALS {
 
 
     public static String MATRIX_WYRÓŻNIK_FIRMY;// = "INW";
-    public static String  MATRIX_OPERATOR;//= "004";
+    public static String MATRIX_OPERATOR;//= "004";
     public static String MATRIX_UNIQUE_CLIENT_ID;//= "PIT1074";
-    public static float MATRIX_POS_X= Utilities.millimetersToPoints(166.75f);
-    public static float MATRIX_POX_Y= y_pixels - Utilities.millimetersToPoints(55f);
-    public static float DATE_TEXT_CORD_X= Utilities.millimetersToPoints(116.75f);
-    public static float DATE_TEXT_CORD_Y= y_pixels - Utilities.millimetersToPoints(54f);
+    public static float MATRIX_POS_X = Utilities.millimetersToPoints(166.75f);
+    public static float MATRIX_POX_Y = y_pixels - Utilities.millimetersToPoints(55f);
+    public static float DATE_TEXT_CORD_X = Utilities.millimetersToPoints(116.75f);
+    public static float DATE_TEXT_CORD_Y = y_pixels - Utilities.millimetersToPoints(54f);
 
 
-    public static float BARCODE_POS_X= 0;
-    public static float BARCODE_POX_Y=  y_pixels - Utilities.millimetersToPoints(55f);
-    public static float BARCODE_HEIGHT= Utilities.millimetersToPoints(10f);
+    public static float BARCODE_POS_X = 0;
+    public static float BARCODE_POX_Y = y_pixels - Utilities.millimetersToPoints(55f);
+    public static float BARCODE_HEIGHT = Utilities.millimetersToPoints(10f);
+    public static float BARCODE_WIDTH = 0;
 
-
-
-
+    public static String BARCODE_FOLDER = "C:/etc/projects/Test/Barcodes";
 
 
 }

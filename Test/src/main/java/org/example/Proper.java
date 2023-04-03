@@ -16,8 +16,8 @@ public class Proper extends Properties{
     {
         try
         {
-            this.prop = new Properties();
-            this.prop.load(new FileInputStream((this.s_IniFile)));
+            prop = new Properties();
+            prop.load(new FileInputStream((this.s_IniFile)));
             return true;
         }
         catch(Exception e)
