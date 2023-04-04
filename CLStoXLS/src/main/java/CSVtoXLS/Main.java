@@ -54,12 +54,7 @@ public class Main {
         {
             folder1.mkdir();
         }
-        File[] csvFiles = folder.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".csv");
-            }
-        });
+        File[] csvFiles = folder.listFiles((dir, name) -> name.endsWith(".csv"));
 
         int filesCount = 0;
         int lineCountInFile = 0;
@@ -104,7 +99,7 @@ public class Main {
             }
             catch (Exception e)
             {
-                System.out.println("Error during creating and saving .xls file:"+e.getMessage());
+                System.out.println("Error during creating and saving .xls file: "+e.getMessage());
             }
 
         }
