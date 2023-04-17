@@ -1,22 +1,31 @@
 package org.example;
 
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
+import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
+import org.apache.pdfbox.text.TextPosition;
+import org.apache.pdfbox.util.Matrix;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
@@ -195,6 +204,7 @@ public class PDF {
         }
     }
 
+
     public static PdfImportedPage getPageFromPdf(String filename, int pageNo) throws IOException, DocumentException {
         PdfReader inDoc = new PdfReader(filename);
         Document doc = new Document(PageSize.A4, 0, 0, 0, 0);
@@ -216,12 +226,11 @@ public class PDF {
         PDDocument doc = PDDocument.load(filename);
         PDFRenderer renderer = new PDFRenderer(doc);
         PDPageTree pages = doc.getDocumentCatalog().getPages();
-        for(int i = 0 ; i < pages.getCount();i=i+2)
-        {
-            BufferedImage image = renderer.renderImage(i,1.8f);
-            BufferedImage barcode_img = image.getSubimage(3,842/2-150,(int)GLOBALS.BARCODE_HEIGHT+15,(int)GLOBALS.BARCODE_WIDTH*2);
-            File file = new File(folder,"img"+i+".jpg");
-            ImageIO.write(barcode_img,"JPEG",file);
+        for (int i = 0; i < pages.getCount(); i = i + 2) {
+            BufferedImage image = renderer.renderImage(i, 1.8f);
+            BufferedImage barcode_img = image.getSubimage(3, 842 / 2 - 150, (int) GLOBALS.BARCODE_HEIGHT + 15, (int) GLOBALS.BARCODE_WIDTH * 2);
+            File file = new File(folder, "img" + i + ".jpg");
+            ImageIO.write(barcode_img, "JPEG", file);
             pagesList.add(pages.get(i));
         }
     }
@@ -248,6 +257,47 @@ public class PDF {
         String a = PdfTextExtractor.getTextFromPage(reader, PageNo);
 
         return a;
+    }
+
+    public static void createPage() throws IOException {
+        PDDocument doc = new PDDocument();
+        PDPage page = new PDPage(PDRectangle.A4);
+        doc.addPage(page);
+        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+
+        contentStream.saveGraphicsState();
+
+        contentStream.setNonStrokingColor(new PDColor(new float[]{0, 0, 0.6f}, PDDeviceRGB.INSTANCE));
+        contentStream.transform(Matrix.getRotateInstance(Math.toRadians(90), PDRectangle.A4.getUpperRightX() / 2, PDRectangle.A4.getUpperRightY() / 2));
+        contentStream.addRect(0, 0, 200, 100);
+        contentStream.fill();
+
+        contentStream.restoreGraphicsState();
+
+        contentStream.beginText();
+        String text = "TYTUL";
+        PDFont font = PDType1Font.HELVETICA_BOLD;
+        int fontSize = 14;
+        contentStream.setFont(font, fontSize);
+        contentStream.setNonStrokingColor(new PDColor(new float[]{0, 0, 0}, PDDeviceRGB.INSTANCE));
+        contentStream.newLineAtOffset((page.getMediaBox().getWidth() - getTextWidth(text, fontSize, font)) / 2, page.getMediaBox().getHeight() - getTextHeight(fontSize, font));
+        contentStream.showText(text);
+
+        contentStream.endText();
+        contentStream.fill();
+
+
+        contentStream.close();
+        doc.save("test.pdf");
+        doc.close();
+    }
+
+    public static float getTextWidth(String text, float fontSize, PDFont font) throws IOException {
+        return (font.getStringWidth(text) / 1000 * fontSize);
+    }
+
+    public static float getTextHeight(float fontSize, PDFont font) {
+        return (font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize);
     }
 
 
@@ -328,6 +378,32 @@ public class PDF {
         return allPackets;
     }
 
+    public static void getSomePages() throws IOException {
+        String folder_path = "C:/etc/projects/Test/in";
+        File folder = new File(folder_path);
+        String[] filesNames = folder.list();
+        System.out.println(filesNames.length);
+
+        for (int j = 0; j < filesNames.length; j++) {
+            System.out.println("Starting processing file: " + folder_path + "/" + filesNames[j]);
+            File file = new File(folder_path + "/" + filesNames[j]);
+            PDDocument doc = PDDocument.load(file);
+            PDDocument new_doc = new PDDocument();
+            PDPageTree pages = doc.getPages();
+            for (int i = 0; i < doc.getNumberOfPages(); i++) {
+                PDPage page = pages.get(i);
+                new_doc.addPage(page);
+            }
+            new_doc.save("C:/etc/projects/Test/in/" + filesNames[j]);
+            new_doc.close();
+            doc.close();
+        }
+        System.out.println("End of processing files from folder:" + folder_path);
+        PDF.RunPDFOptimalizer();
+
+    }
+
+
     public static List<BufferedImage> getMatrixImage(File pdf) {
         List<BufferedImage> list1 = new ArrayList<>();
         try {
@@ -355,6 +431,48 @@ public class PDF {
             throw new RuntimeException(e);
         }
         return list1;
+    }
+
+    public static String readBarcodeAndQRCodeFromImage(String filename)
+    {
+        File file = new File(filename);
+        try {
+            BufferedImage image = ImageIO.read(file);
+
+            int[] pixels = image.getRGB(0,0,image.getWidth(),image.getHeight(),null,0,image.getWidth());
+            RGBLuminanceSource source = new RGBLuminanceSource(image.getWidth(),image.getHeight(),pixels);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            MultiFormatReader reader = new MultiFormatReader();
+            Result result = reader.decodeWithState(bitmap);
+
+            return result.getText();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void RunPDFOptimalizer() {
+        try {
+            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:/etc/libs\" && java -jar PdfOptimizer.jar C:/etc/projects/Test/in C:/etc/projects/Test/out");
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while (true) {
+                line = r.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            System.out.println("Blad podczas wykonywania komendy do uruchomienia PdfOptymalizer.jar: " + e.getMessage());
+        }
+        System.out.println("Utowrzono zoptymalizowany plik");
     }
 
 

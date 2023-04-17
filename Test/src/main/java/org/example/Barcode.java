@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class Barcode {
         code.setCode(input_code);
         code.setFont(null);
         code.setBaseline(0);
+
         //Creating barcode image to save it to file
         saveBarcodeToFile(code, input_code, packetNo);
         //Image created to put it in pdf file
@@ -38,30 +40,56 @@ public class Barcode {
 
         //rotate to begin of code be at the top
         image.setRotationDegrees(90);
-        GLOBALS.BARCODE_WIDTH =image.getWidth();
+        GLOBALS.BARCODE_WIDTH = image.getWidth();
         return image;
     }
 
     public static void saveBarcodeToFile(Barcode128 code, String input_code, int packetNo) throws IOException {
         //Creating folder for barcodes
+        int padding = 5;
         File folder = new File(GLOBALS.BARCODE_FOLDER);
         if (!folder.exists()) {
             folder.mkdir();
         }
         java.awt.Image img = code.createAwtImage(Color.BLACK, Color.WHITE);
-        BufferedImage buffimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        buffimg.getGraphics().drawImage(img, 0, 0, null);
-        buffimg.getGraphics().dispose();
+        BufferedImage buffimg = new BufferedImage(img.getWidth(null) + padding*2 , img.getHeight(null) + padding*2, BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g = buffimg.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0, buffimg.getWidth(),buffimg.getHeight());
+        g.drawImage(img,padding,padding,null);
+        g.dispose();
+
         File file = new File(folder, "Packet_" + packetNo + "_barcode_" + input_code + ".jpg");
         ImageIO.write(buffimg, "jpg", file);
     }
 
 
-    public static Image createMatrix(PdfContentByte cb, String matrix_code) throws UnsupportedEncodingException, BadElementException {
+    public static Image createMatrix(PdfContentByte cb, String matrix_code) throws IOException, BadElementException {
         BarcodeDatamatrix datamatrix = new BarcodeDatamatrix();
         datamatrix.setHeight((int) Utilities.millimetersToPoints(30f));
         datamatrix.generate(matrix_code);
         Image image = datamatrix.createImage();
+
+        int padding = 5;
+
+        java.awt.Image img = datamatrix.createAwtImage(Color.BLACK,Color.WHITE).getScaledInstance((int) (image.getWidth()*5), (int) (image.getHeight()*5), java.awt.Image.SCALE_SMOOTH);
+        BufferedImage buffimg = new BufferedImage(img.getWidth(null) + padding*2,img.getHeight(null) + padding*2,BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g = buffimg.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,buffimg.getWidth(),buffimg.getHeight());
+        g.drawImage(img,padding,padding,null);
+        g.dispose();
+
+        File folder = new File("C:\\etc\\projects\\Test\\Matrix");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File file = new File(folder, "img_"+ matrix_code.replace('/','.') + ".jpg");
+        ImageIO.write(buffimg, "jpg", file);
+
         image.setAbsolutePosition(GLOBALS.MATRIX_POS_X, GLOBALS.MATRIX_POX_Y);
         return image;
     }

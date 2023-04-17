@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b80fbaf-72ac-4131-a84b-6ee34c2921bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Inwemer/Inwemer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Inwemer/InwemerProjekt/InwemerProjekt.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../przyklad_tace/.idea/przyklad_tace.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CLStoXLS/out/artifacts/CSVtoXLS_jar/CSVtoXLS.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../CLStoXLS/out/artifacts/CSVtoXLS_jar/CSVtoXLS.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CLStoXLS/src/main/java/CSVtoXLS/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../CLStoXLS/src/main/java/CSVtoXLS/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/ConnectPDFs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ConnectingPDFs/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +52,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TODO_SCOPE": "All Places",
-    "last_opened_file_path": "C:/etc/projects/przyklad_tace",
+    "last_opened_file_path": "C:/etc/projects/DisplayPDFMeta",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -94,33 +99,43 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="68" />
+          <line>221</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
           <line>49</line>
-          <option name="timeStamp" value="69" />
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
           <line>53</line>
-          <option name="timeStamp" value="73" />
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="74" />
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="75" />
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/PDF.java</url>
-          <line>57</line>
-          <option name="timeStamp" value="76" />
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Barcode.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
