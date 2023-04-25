@@ -1,0 +1,1 @@
+start /B javaw -Xmx500m -jar BarcodeReader.jar
