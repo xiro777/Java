@@ -2,7 +2,7 @@ package SwingApp;
 
 /******************************************************************************
 *   Project Name: BarcodeReader
-*   Version:v0.4
+*   Version:v0.5
 *   Description: Project works as a background application with interface in tray
  *               main functionality is screenshoting MAIN screen only and crop
  *               BARCODE or MATRIX and get value from it. App contains also Rebind
@@ -51,7 +51,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 public class BackgroundApp implements NativeKeyListener {
     private static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     private static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
-    public static JFrame f = new JFrame();
+
     public static BufferedImage screenshot = null;
     public static Robot robot = null;
     public static int[] pixels;
@@ -62,7 +62,7 @@ public class BackgroundApp implements NativeKeyListener {
     public static double[] scale = {0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6};
     public static Graphics2D g = null;
     public static AffineTransform transform = null;
-    public static JPanel panel = null;
+
     public static JTextArea textArea = null;
     public static StringSelection selection = null;
     public static Clipboard clipboard = null;
@@ -74,7 +74,7 @@ public class BackgroundApp implements NativeKeyListener {
     public static JButton copyButton = null;
     public static JButton screenshotButton = null;
     public static JButton exitProgramButton = null;
-    public static int iterator;
+    public static int iterator = 0;
 
 
     public BackgroundApp() {
@@ -90,14 +90,14 @@ public class BackgroundApp implements NativeKeyListener {
 
     public static void main(String[] args) throws IOException {
         //Loading properties from config.ini
-        Proper p1 = new Proper();
-        if(p1.init())
-        {
-           if(!p1.loadProperties())
-           {
-               System.exit(1);
-           }
-        }
+//        Proper p1 = new Proper();
+//        if(p1.init())
+//        {
+//           if(!p1.loadProperties())
+//           {
+//               System.exit(1);
+//           }
+//        }
         //Run application with tray
         if (SystemTray.isSupported()) {
             new BackgroundApp();
@@ -131,12 +131,12 @@ public class BackgroundApp implements NativeKeyListener {
             });
 
 
-            info.addActionListener(e -> JOptionPane.showMessageDialog(null, "Screenshot keybind: " + NativeKeyEvent.getKeyText(Globals.screenshotBind) + "\nExit program keybind: " + NativeKeyEvent.getKeyText(Globals.exitBind) + "\nRemember after using scan function to wait and close all Popups(if u will run more than one scan at the same time start clicking mouse anywhere and close all popups)\nVersion:v0.4\n\nCreated by: Kacper Morawski"));
+            info.addActionListener(e -> JOptionPane.showMessageDialog(null, "Screenshot keybind: " + NativeKeyEvent.getKeyText(Globals.screenshotBind) + "\nExit program keybind: " + NativeKeyEvent.getKeyText(Globals.exitBind) + "\nApplication works only on MAIN monitor(before using make sure to press mouse anywhere on Main monitor)\nVersion:v0.5\n\nCreated by: Kacper Morawski"));
 
             rebindKeys.addActionListener(e -> {
                 //Create frame with 2 buttons
-                f = new JFrame("Change keybinds");
-                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Globals.f = new JFrame("Change keybinds");
+                Globals.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                 screenshotButton = new JButton("Screenshot Keybind");
                 exitProgramButton = new JButton("Exit Keybind");
@@ -146,27 +146,26 @@ public class BackgroundApp implements NativeKeyListener {
 
                 //Handiling rebind screenshot button
                 screenshotButton.addActionListener(e12 -> {
-                    dialog = new JDialog(f, "Pressed key will be assigned to screenshot", false);
+                    dialog = new JDialog(Globals.f, "Pressed key will be assigned to screenshot", false);
                     dialog.setLocationRelativeTo(null);
                     dialog.setSize(200, 100);
-
 
                     dialog.addKeyListener(new KeyAdapter() {
                         @Override
                         public void keyPressed(KeyEvent e12) {
                             //Assigne pressed button to screenshot button
                             Globals.screenshotBind = Globals.temp;
-                                try {
-                                    //Saving new keybind in config.ini
-                                    p1.savePropertoIni("SCREENSHOT_BIND",Globals.screenshotBind);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                } catch (URISyntaxException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+//                                try {
+//                                    //Saving new keybind in config.ini
+//                                    p1.savePropertoIni("SCREENSHOT_BIND",Globals.screenshotBind);
+//                                } catch (IOException ex) {
+//                                    throw new RuntimeException(ex);
+//                                } catch (URISyntaxException ex) {
+//                                    throw new RuntimeException(ex);
+//                                }
                             dialog.dispose();
-                            f.dispose();
-                            f = null;
+                            Globals.f.dispose();
+                            Globals.f = null;
                             dialog = null;
                             copyButton = null;
                             screenshotButton = null;
@@ -178,7 +177,7 @@ public class BackgroundApp implements NativeKeyListener {
                 });
 
                 exitProgramButton.addActionListener(e1 -> {
-                    dialog = new JDialog(f, "Pressed key will be assigned to exit", false);
+                    dialog = new JDialog(Globals.f, "Pressed key will be assigned to exit", false);
                     dialog.setLocationRelativeTo(null);
                     dialog.setSize(200, 100);
 
@@ -186,15 +185,15 @@ public class BackgroundApp implements NativeKeyListener {
                         @Override
                         public void keyPressed(KeyEvent e1) {
                             Globals.exitBind = Globals.temp;
-                                try {
-                                    p1.savePropertoIni("EXIT_BIND",Globals.exitBind);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                } catch (URISyntaxException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+//                                try {
+//                                    p1.savePropertoIni("EXIT_BIND",Globals.exitBind);
+//                                } catch (IOException ex) {
+//                                    throw new RuntimeException(ex);
+//                                } catch (URISyntaxException ex) {
+//                                    throw new RuntimeException(ex);
+//                                }
                             dialog.dispose();
-                            f.dispose();
+                            Globals.f.dispose();
                             //f = null;
                             dialog = null;
                             copyButton = null;
@@ -209,12 +208,12 @@ public class BackgroundApp implements NativeKeyListener {
 
                 });
 
-                f.add(screenshotButton);
-                f.add(exitProgramButton);
-                f.setLayout(null);
-                f.setSize(515, 200);
-                f.setLocationRelativeTo(null);
-                f.setVisible(true);
+                Globals.f.add(screenshotButton);
+                Globals.f.add(exitProgramButton);
+                Globals.f.setLayout(null);
+                Globals.f.setSize(515, 200);
+                Globals.f.setLocationRelativeTo(null);
+                Globals.f.setVisible(true);
 
             });
 
@@ -225,156 +224,9 @@ public class BackgroundApp implements NativeKeyListener {
             });
             trayIcon.setPopupMenu(popup);
         }
-    }
+    }   //end main
 
-
-    public static class CropFrame {
-        private int x = 0;
-        private int y = 0;
-        private int w = 0;
-        private int h = 0;
-        private int width = 0;
-        private int height = 0;
-        private boolean cropped = false;
-        private boolean visible = true;
-        private Point start;
-        private Point end;
-
-
-
-
-        //Main constructor which create frame with screenshot to crop from it
-        public CropFrame(BufferedImage screenshot) {
-            f.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-            f.setAlwaysOnTop(true);
-            f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            f.setSize(screenshot.getWidth(), screenshot.getHeight());
-            f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            f.setUndecorated(true);
-            f.setTitle("Crop Frame");
-
-            //create new panel which contains screenshot as background and allow to draw rectangle on this panel
-            panel = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    g.drawImage(screenshot, 0, 0, this);
-                    g.setColor(Color.BLUE);
-                    if (start != null && end != null) {
-                        x = Math.min(start.x, end.x);
-                        y = Math.min(start.y, end.y);
-                        w = Math.abs(start.x - end.x);
-                        h = Math.abs(start.y - end.y);
-                        g.drawImage(screenshot, 0, 0, this);
-                        g.drawRect(x, y, w, h);
-                    }
-                    g.dispose();
-                }
-            };
-
-            //handling mouse buttons (gathering mouse positions)
-            f.addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                    start = e.getPoint();
-                    end = start;
-                    x = e.getX();
-                    y = e.getY();
-                }
-
-                public void mouseReleased(MouseEvent e) {
-                    end = e.getPoint();
-                    width = e.getX() - x;
-                    height = e.getY() - y;
-                    //change cursor to normal one
-                    f.setCursor(Cursor.getDefaultCursor());
-                    //disapear of frame
-                    f.dispose();
-                    f= null;
-                    visible = false;
-                    cropped = true;
-                }
-            });
-            f.addMouseMotionListener(new MouseAdapter() {
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    super.mouseDragged(e);
-                    end = e.getPoint();
-                    f.revalidate();
-                    f.repaint();
-                }
-            });
-
-            f.setContentPane(panel);
-            f.pack();
-            f.setVisible(true);
-        }
-
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public boolean isCropped() {
-            return cropped;
-        }
-    }
-
-    //Methods from JNativeHook library which collect pressed keys from whole system
-    @Override
-    public void nativeKeyPressed(NativeKeyEvent e) {
-        if (e.getKeyCode() == Globals.screenshotBind) {
-            if (!Globals.cropisRunned) {
-                captureScreenshot();
-            } else {
-                //JOptionPane.showMessageDialog(null, "Cropping image function is in progress (after closing popup start method again)");
-                Globals.cropisRunned = false;
-            }
-
-
-        }
-        if (e.getKeyCode() == Globals.exitBind) {
-            JOptionPane optionPane = new JOptionPane("Program will close in 3 sec", JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = optionPane.createDialog("Message Dialog");
-            Timer timer = new Timer(3000, e1 -> {
-                dialog.setVisible(false);
-                dialog.dispose();
-            });
-            timer.setRepeats(false);
-            timer.start();
-            dialog.setVisible(true);
-            System.exit(0);
-
-        }
-        //I couldnt find solution for collecting rebind keybinds so in whole program temp is change on key code u press and it is used only when u press Rebind->AnyButton
-        if (e.getKeyCode() != Globals.screenshotBind | e.getKeyCode() != Globals.exitBind) {
-            Globals.temp = e.getKeyCode();
-        }
-
-    }
-
-    @Override
-    public void nativeKeyReleased(NativeKeyEvent e) {
-        // Do nothing
-    }
-
-    @Override
-    public void nativeKeyTyped(NativeKeyEvent e) {
-        // Do nothing
-    }
-
-
+    //Main Method to capture screenshot
     private void captureScreenshot() {
         try {
             if(iterator>Globals.max_number_of_running)
@@ -384,10 +236,11 @@ public class BackgroundApp implements NativeKeyListener {
             }
             iterator++;
             Globals.cropisRunned = true;
+
             robot = new Robot();
             screenshot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
-            if(f == null)
-                f = new JFrame();
+            if(Globals.f == null)
+                Globals.f = new JFrame();
             cropImage(screenshot);
             screenshot = null;
             robot = null;
@@ -397,6 +250,71 @@ public class BackgroundApp implements NativeKeyListener {
             Globals.cropisRunned = false;
             ex.printStackTrace();
         }
+    }
+
+    //Method which display JFrame and crop images
+    private boolean cropImage(BufferedImage screenshot) {
+        String output;
+        croppedImage = null;
+        cropFrame = null;
+        cropFrame = new CropFrame(screenshot);
+        try {
+            while (cropFrame.visible) {
+                Thread.sleep(100);
+            }
+            if (cropFrame.isCropped()) {
+
+                if(cropFrame.getHeight() == 0 || cropFrame.getWidth() == 0)
+                {
+                    JOptionPane.showMessageDialog(null, "Image wasn't cropped properly from screenshot!");
+                    return false;
+                }
+                croppedImage = screenshot.getSubimage(cropFrame.x,cropFrame.y,cropFrame.w,cropFrame.h);
+                //creating popup with selectable text area and copy button which contains Barcode/Matrix text
+                output = readBarcodeAndQRCodeFromScreenShot(croppedImage);
+                croppedImage = null;
+                cropFrame = null;
+                if(output==null)
+                {
+                    Runtime.getRuntime().exec("java -jar BarcodeReader.jar");
+                    System.exit(0);
+                    return false;
+                }
+                Globals.panel = new JPanel();
+                textArea = new JTextArea();
+                textArea.setEditable(false);
+                textArea.setText(output);
+                copyButton = new JButton("Copy");
+                copyButton.addActionListener(e -> {
+                    selection = new StringSelection(output);
+                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(selection, selection);
+                });
+                Globals.panel.add(textArea);
+                Globals.panel.add(copyButton);
+                JOptionPane.showOptionDialog(null, Globals.panel, "Message", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+                Globals.cropisRunned = false;
+                Globals.panel = null;
+                selection = null;
+                clipboard = null;
+                textArea = null;
+                copyButton = null;
+                return true;
+            }
+        } catch (InterruptedException ex) {
+            Globals.cropisRunned = false;
+            ex.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        croppedImage = null;
+        cropFrame = null;
+        Globals.panel = null;
+        selection = null;
+        clipboard = null;
+        textArea = null;
+        copyButton = null;
+        return false;
     }
 
     //Method to recognize barcode and matrix from cropped image
@@ -450,6 +368,7 @@ public class BackgroundApp implements NativeKeyListener {
         return null;
     }
 
+    //Method scale image for better recognizing barcode/matrix
     public BufferedImage scaleImage(BufferedImage image, double scale) {
         try
         {
@@ -470,6 +389,7 @@ public class BackgroundApp implements NativeKeyListener {
         return null;
     }
 
+    //Method rotate image because barcode is only readable horizontally(not vertically)
     public static BufferedImage rotateImage(BufferedImage image) throws IOException {
         try{
             rotatedImage = new BufferedImage(image.getHeight(), image.getWidth(), BufferedImage.TYPE_INT_RGB);
@@ -495,64 +415,48 @@ public class BackgroundApp implements NativeKeyListener {
     }
 
 
-    private boolean cropImage(BufferedImage screenshot) {
-        String output;
-        croppedImage = null;
-        cropFrame = null;
-        cropFrame = new CropFrame(screenshot);
-        try {
-            while (cropFrame.visible) {
-                Thread.sleep(100);
-            }
-            if (cropFrame.isCropped()) {
 
-                croppedImage = screenshot.getSubimage(cropFrame.x,cropFrame.y,cropFrame.w,cropFrame.h);
-                //creating popup with selectable text area and copy button which contains Barcode/Matrix text
-                output = readBarcodeAndQRCodeFromScreenShot(croppedImage);
-                croppedImage = null;
-                cropFrame = null;
-                if(output==null)
-                {
-                    System.out.println("PUSTY TEKST");
-                    Runtime.getRuntime().exec("java -jar BarcodeReader.jar");
-                    System.exit(0);
-                    return false;
-                }
-                panel = new JPanel();
-                textArea = new JTextArea();
-                textArea.setEditable(false);
-                textArea.setText(output);
-                copyButton = new JButton("Copy");
-                copyButton.addActionListener(e -> {
-                    selection = new StringSelection(output);
-                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(selection, selection);
-                });
-                panel.add(textArea);
-                panel.add(copyButton);
-                JOptionPane.showOptionDialog(null, panel, "Message", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    //Methods from JNativeHook library which collect pressed keys from whole system but only main screen
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent e) {
+        if (e.getKeyCode() == Globals.screenshotBind) {
+            if (!Globals.cropisRunned) {
+                captureScreenshot();
+            } else {
+                //JOptionPane.showMessageDialog(null, "Cropping image function is in progress (after closing popup start method again)");
                 Globals.cropisRunned = false;
-                panel = null;
-                selection = null;
-                clipboard = null;
-                textArea = null;
-                copyButton = null;
-                return true;
             }
-        } catch (InterruptedException ex) {
-            Globals.cropisRunned = false;
-            ex.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+
         }
-        croppedImage = null;
-        cropFrame = null;
-        panel = null;
-        selection = null;
-        clipboard = null;
-        textArea = null;
-        copyButton = null;
-        return false;
+        if (e.getKeyCode() == Globals.exitBind) {
+            JOptionPane optionPane = new JOptionPane("Program will close in 3 sec", JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = optionPane.createDialog("Message Dialog");
+            Timer timer = new Timer(3000, e1 -> {
+                dialog.setVisible(false);
+                dialog.dispose();
+            });
+            timer.setRepeats(false);
+            timer.start();
+            dialog.setVisible(true);
+            System.exit(0);
+
+        }
+        //I couldnt find solution for collecting rebind keybinds so in whole program temp is change on key code u press and it is used only when u press Rebind->AnyButton
+        if (e.getKeyCode() != Globals.screenshotBind | e.getKeyCode() != Globals.exitBind) {
+            Globals.temp = e.getKeyCode();
+        }
+
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent e) {
+        // Do nothing
+    }
+
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent e) {
+        // Do nothing
     }
 }
 
