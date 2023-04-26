@@ -264,7 +264,7 @@ public class BackgroundApp implements NativeKeyListener {
             }
             if (cropFrame.isCropped()) {
 
-                if(cropFrame.getHeight() == 0 || cropFrame.getWidth() == 0)
+                if(cropFrame.w == 0 || cropFrame.h == 0)
                 {
                     JOptionPane.showMessageDialog(null, "Image wasn't cropped properly from screenshot!");
                     return false;
