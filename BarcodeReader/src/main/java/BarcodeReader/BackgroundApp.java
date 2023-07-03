@@ -1,9 +1,9 @@
 package BarcodeReader;
 
 /************************************************************************************************************
-*   Project Name: BarcodeReader
-*   Version:v0.71
-*   Description[PL]: Projekt to aplikacja działająca w tle, wyświetlająca się w Tray
+ *   Project Name: BarcodeReader
+ *   Version:v1.0
+ *   Description[PL]: Projekt to aplikacja działająca w tle, wyświetlająca się w Tray
  *      (prawy dolny gór małe ikonki). Główną funkcją programu jest możliwość robienia screenshotu ekranu
  *      i wycinanie z niego obszaru do zczytania. Funckja rozczytuje z obrazu wartości Matrixów/Barcodów.
  *      Program posiada możliwość przypisania skrótów klawiszowych do uruchamiania funkcji screenshot i
@@ -18,7 +18,7 @@ package BarcodeReader;
  *      location of the application (default F6-taking a screenshot, F7-exiting the program).
  *      Additionally in the Tray menu are carefully to check the hotkeys,
  *      turn on the screen and run the program. Short keys are written to the config.ini file.
-*   Created by: Kacper Morawski
+ *   Created by: Kacper Morawski
  ************************************************************************************************************/
 
 /*
@@ -44,22 +44,25 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.w3c.dom.css.Rect;
 
 public class BackgroundApp implements NativeKeyListener {
     private static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     private static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
-
     public static BufferedImage screenshot = null;
     public static Robot robot = null;
     public static int[] pixels;
@@ -70,7 +73,6 @@ public class BackgroundApp implements NativeKeyListener {
     public static double[] scale = {0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6};
     public static Graphics2D g = null;
     public static AffineTransform transform = null;
-
     public static JTextArea textArea = null;
     public static StringSelection selection = null;
     public static Clipboard clipboard = null;
@@ -83,7 +85,7 @@ public class BackgroundApp implements NativeKeyListener {
     public static JButton screenshotButton = null;
     public static JButton exitProgramButton = null;
     public static int iterator = 0;
-
+    public static String programName;
 
     public BackgroundApp() {
         try {
@@ -100,12 +102,22 @@ public class BackgroundApp implements NativeKeyListener {
         //Loading properties from config.ini
         //To debug code comment initing config.ini(also in rebind function) and Globals values
         Proper p1 = new Proper();
-        if(p1.init())
+        if (p1.init()) {
+            if (!p1.loadProperties()) {
+                System.exit(1);
+            }
+        }
+        File folder = new File(Globals.ini_path_without_ini.getParent());
+        if(folder.exists() && folder.isDirectory())
         {
-           if(!p1.loadProperties())
-           {
-               System.exit(1);
-           }
+            File[] files = folder.listFiles();
+            for(File file: files)
+            {
+                if(file.getName().startsWith("BarcodeReader")==true)
+                {
+                    programName = file.getName();
+                }
+            }
         }
         //until there
         //Run application with tray
@@ -141,7 +153,7 @@ public class BackgroundApp implements NativeKeyListener {
             });
 
 
-            info.addActionListener(e -> JOptionPane.showMessageDialog(null, "Screenshot keybind: " + NativeKeyEvent.getKeyText(Globals.screenshotBind) + "\nExit program keybind: " + NativeKeyEvent.getKeyText(Globals.exitBind) + "\nAplikacja dziala tylko na glownym monitorze(przed uruchomieniem skanowania prosze kliknac na Glowny monitor i dopiero rozpoczac funkcje)\nVersion:v0.71\n\nCreated by: Kacper Morawski"));
+            info.addActionListener(e -> JOptionPane.showMessageDialog(null, "Screenshot keybind: " + NativeKeyEvent.getKeyText(Globals.screenshotBind) + "\nExit program keybind: " + NativeKeyEvent.getKeyText(Globals.exitBind) + "\nAplikacja dziala tylko na glownym monitorze(przed uruchomieniem skanowania prosze kliknac na Glowny monitor i dopiero rozpoczac funkcje)\nVersion:v1.0\n\nCreated by: Kacper Morawski"));
 
             rebindKeys.addActionListener(e -> {
                 //Create frame with 2 buttons
@@ -166,15 +178,15 @@ public class BackgroundApp implements NativeKeyListener {
                             //Assigne pressed button to screenshot button
                             Globals.screenshotBind = Globals.temp;
                             //to debug comment from here
-                                try {
-                                    //Saving new keybind in config.ini
-                                    p1.savePropertoIni("SCREENSHOT_BIND",Globals.screenshotBind);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                } catch (URISyntaxException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                                //until there
+                            try {
+                                //Saving new keybind in config.ini
+                                p1.savePropertoIni("SCREENSHOT_BIND", Globals.screenshotBind);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (URISyntaxException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            //until there
                             dialog.dispose();
                             Globals.f.dispose();
                             Globals.f = null;
@@ -198,14 +210,14 @@ public class BackgroundApp implements NativeKeyListener {
                         public void keyPressed(KeyEvent e1) {
                             Globals.exitBind = Globals.temp;
                             //to debug comment from here
-                                try {
-                                    p1.savePropertoIni("EXIT_BIND",Globals.exitBind);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                } catch (URISyntaxException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                                //to there
+                            try {
+                                p1.savePropertoIni("EXIT_BIND", Globals.exitBind);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (URISyntaxException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            //to there
                             dialog.dispose();
                             Globals.f.dispose();
                             //f = null;
@@ -242,12 +254,10 @@ public class BackgroundApp implements NativeKeyListener {
 
     //Main Method to capture screenshot
     private void captureScreenshot() {
-
         try {
-            //Rerun application after too many use(because program was not restoring used RAM after every use)
-            if(iterator>Globals.max_number_of_running)
-            {
-                Runtime.getRuntime().exec("java -jar BarcodeReader.jar");
+            //Rerun application after too many use(because program was not restoring allocated RAM after every use)
+            if (iterator > Globals.max_number_of_running) {
+                Runtime.getRuntime().exec("java -jar "+programName);
                 System.exit(0);
             }
             iterator++;
@@ -255,7 +265,7 @@ public class BackgroundApp implements NativeKeyListener {
 
             robot = new Robot();
             screenshot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
-            if(Globals.f == null)
+            if (Globals.f == null)
                 Globals.f = new JFrame();
             cropImage(screenshot);
             screenshot = null;
@@ -282,21 +292,19 @@ public class BackgroundApp implements NativeKeyListener {
             //after cropping image isCropped is true
             if (cropFrame.isCropped()) {
                 //Display popup when u don't crop any rectangle
-                if(cropFrame.w == 0 || cropFrame.h == 0)
-                {
+                if (cropFrame.w == 0 || cropFrame.h == 0) {
                     JOptionPane.showMessageDialog(null, "Image wasn't cropped properly from screenshot!");
                     return false;
                 }
                 //crop subimage from screenshot which will be scanned
-                croppedImage = screenshot.getSubimage(cropFrame.x,cropFrame.y,cropFrame.w,cropFrame.h);
+                croppedImage = screenshot.getSubimage(cropFrame.x, cropFrame.y, cropFrame.w, cropFrame.h);
                 //creating popup with selectable text area and copy button which contains Barcode/Matrix text
                 output = readBarcodeAndQRCodeFromScreenShot(croppedImage);
                 croppedImage = null;
                 cropFrame = null;
                 //rerun application when barcode/matrix value is not found(also was occupy RAM depends on size of cropped image)
-                if(output==null)
-                {
-                    Runtime.getRuntime().exec("java -jar BarcodeReader.jar");
+                if (output == null) {
+                    Runtime.getRuntime().exec("java -jar "+programName);
                     System.exit(0);
                     return false;
                 }
@@ -338,6 +346,7 @@ public class BackgroundApp implements NativeKeyListener {
         return false;
     }
 
+
     //Method to recognize barcode and matrix from cropped image
     private String readBarcodeAndQRCodeFromScreenShot(BufferedImage image) {
 
@@ -349,7 +358,7 @@ public class BackgroundApp implements NativeKeyListener {
             try {
                 //main method for decoding text from image
                 pixels = scaledImg.getRGB(0, 0, scaledImg.getWidth(), scaledImg.getHeight(), null, 0, scaledImg.getWidth());
-                if(pixels == null)
+                if (pixels == null)
                     break;
                 source = new RGBLuminanceSource(scaledImg.getWidth(), scaledImg.getHeight(), pixels);
                 bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -364,13 +373,12 @@ public class BackgroundApp implements NativeKeyListener {
             try {
                 rotatedImage = rotateImage(scaledImg);
                 pixels = rotatedImage.getRGB(0, 0, rotatedImage.getWidth(), rotatedImage.getHeight(), null, 0, rotatedImage.getWidth());
-                if(pixels == null)
+                if (pixels == null)
                     break;
                 source = new RGBLuminanceSource(rotatedImage.getWidth(), rotatedImage.getHeight(), pixels);
                 bitmap = new BinaryBitmap(new HybridBinarizer(source));
                 reader = new MultiFormatReader();
                 result = reader.decodeWithState(bitmap);
-
                 return result.getText();
             } catch (IOException | NotFoundException e) {
                 System.out.println(e.getMessage());
@@ -392,17 +400,14 @@ public class BackgroundApp implements NativeKeyListener {
 
     //Method scale image for better recognizing barcode/matrix(this method help to decode image by changing size)
     public BufferedImage scaleImage(BufferedImage image, double scale) {
-        try
-        {
+        try {
             scaledImg = new BufferedImage((int) (image.getWidth() * scale), (int) (image.getHeight() * scale), BufferedImage.TYPE_INT_RGB);
             g = scaledImg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g.drawImage(image, 0, 0, (int) (image.getWidth() * scale), (int) (image.getHeight() * scale), null);
             g.dispose();
             return scaledImg;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         JOptionPane.showMessageDialog(null, "Cropping image function is in progress (press mouse anywhere and start Scan function again)");
@@ -413,20 +418,18 @@ public class BackgroundApp implements NativeKeyListener {
 
     //Method rotate image because barcode is only readable horizontally(not vertically)
     public static BufferedImage rotateImage(BufferedImage image) throws IOException {
-        try{
+        try {
             rotatedImage = new BufferedImage(image.getHeight(), image.getWidth(), BufferedImage.TYPE_INT_RGB);
             g = rotatedImage.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             transform = new AffineTransform();
-            transform.translate((float)(image.getHeight()) / 2, (float)(image.getWidth()) / 2);
+            transform.translate((float) (image.getHeight()) / 2, (float) (image.getWidth()) / 2);
             transform.rotate(Math.toRadians(90));
-            transform.translate(-(float)(image.getWidth()) / 2, -(float)(image.getHeight()) / 2);
+            transform.translate(-(float) (image.getWidth()) / 2, -(float) (image.getHeight()) / 2);
             g.drawImage(image, transform, null);
             g.dispose();
             return rotatedImage;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         JOptionPane.showMessageDialog(null, "Cropping image function is in progress (press mouse anywhere and start Scan function again)");
@@ -435,7 +438,6 @@ public class BackgroundApp implements NativeKeyListener {
         transform = null;
         return null;
     }
-
 
 
     //Methods from JNativeHook library which collect pressed keys from whole system but only main screen
@@ -464,7 +466,7 @@ public class BackgroundApp implements NativeKeyListener {
             System.exit(0);
 
         }
-        //I couldnt find solution for collecting rebind keybinds so in whole program temp is change on key code u press and it is used only when u press Rebind->AnyButton
+        //I couldn't find solution for collecting rebind keybinds so in whole program temp is change on key code u press and it is used only when u press Rebind->AnyButton
         if (e.getKeyCode() != Globals.screenshotBind | e.getKeyCode() != Globals.exitBind) {
             Globals.temp = e.getKeyCode();
         }

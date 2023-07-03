@@ -1,1 +1,3 @@
-start /B javaw -Xmx500m -jar BarcodeReader.jar
+for /R %%F in (BarcodeReader*.jar) do (
+start /B javaw -Xmx500m -jar "%%F"
+)

@@ -13,7 +13,7 @@ public class Proper extends Properties {
 
 
     public Proper() throws IOException {
-        //if config doesnt exist create one with default keybinds and max amount of run function
+        //if config doesn't exist create one with default key binds and max amount of run function
         if(!Globals.configFile.exists())
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(Globals.configFile));
